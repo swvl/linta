@@ -18,6 +18,21 @@ To use Linta in your project, add the following line to `build.gradle` file.
 lintChecks "com.swvl.lint:linta-android:x.y.z"
 ```
 
+## Documentation
+
+The following are the lint checks currently implemented by Linta [please add the documentation to any recent addition and/or any missing ones]:
+
+
+| Lint Issue ID           |    Severity   | Description                                                                                               |
+|:-----------------------:|:-------------:| --------------------------------------------------------------------------------------------------------- |
+| `DuplicateColors`       |    warning    | When a duplicate color is defined in a resource file                                                      |
+| `DuplicateResourceFiles`|    warning    | When there are two or more duplicate resource files containing the same exact attributes, regardless of                                                   differences in whitespaces, attributes order, or used tools namespace if any                              |
+| `HardcodedColorSrcCode` |     error     | When a hardcoded color is used in a source code file (Java or Kotlin)                                     |
+| `HardcodedColorXml`     |     error     | When a hardcoded color is used in a resource file (drawables, layouts, etc.)                              |
+| `RedundantStyles`       |    warning    | When a style is created without adding any new attributes                                                 |
+
+To see how these checks work in action, check our [sample app](https://github.com/swvl/linta/tree/main/sample).
+
 ## License
 
 ```
