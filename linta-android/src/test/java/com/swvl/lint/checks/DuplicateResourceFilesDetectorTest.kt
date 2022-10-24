@@ -106,6 +106,47 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
+    fun `Given 2 duplicate resources, one with attributes that are under the tools namespace and another without, a warning should be reported`() {
+        TestLintTask.lint()
+            .files(
+                xml(
+                    "res/layout/item_title.xml",
+                    """
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/tv_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        tools:text="Title" />
+                    """
+                ).indented(),
+                xml(
+                    "res/layout/item_option.xml",
+                    """
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/tv_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+                    """
+                ).indented()
+            )
+            .issues(DuplicateResourceFilesDetector.ISSUE)
+            .allowMissingSdk()
+            .run()
+            .expectCount(1, Severity.WARNING)
+    }
+
+    @Test
     fun `Given 2 duplicate resources with different attributes that are under the tools namespace, a warning should be reported`() {
         TestLintTask.lint()
             .files(
