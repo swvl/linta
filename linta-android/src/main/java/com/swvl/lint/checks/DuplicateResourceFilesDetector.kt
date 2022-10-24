@@ -71,15 +71,12 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     private fun removeToolsNamespaceAttributes(node: Node?) {
-        // Remove all attributes under from the tools namespace.
+        // Remove tools namespace and all attributes under it.
         val attributesCount = node?.attributes?.length ?: 0
         for (i in 0 until attributesCount) {
             val attr = node?.attributes?.item(i)
-            if (attr?.namespaceURI == TOOLS_NAMESPACE_URI) {
-                currentDocument = currentDocument.replace(
-                    attr.toString(),
-                    ""
-                )
+            if (attr?.namespaceURI == TOOLS_NAMESPACE_URI || attr?.nodeValue == TOOLS_NAMESPACE_URI) {
+                currentDocument = currentDocument.replace(attr.toString(), "")
             }
         }
 
