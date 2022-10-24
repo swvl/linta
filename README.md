@@ -22,7 +22,6 @@ lintChecks "com.swvl.lint:linta-android:x.y.z"
 
 The following are the lint checks currently implemented by Linta [please add the documentation to any recent addition and/or any missing ones]:
 
-
 | Lint Issue ID           |    Severity   | Description                                                                                            |
 |:-----------------------:|:-------------:|--------------------------------------------------------------------------------------------------------|
 | `DuplicateColors`       |    warning    | When a duplicate color is defined in a resource file                                                   |
