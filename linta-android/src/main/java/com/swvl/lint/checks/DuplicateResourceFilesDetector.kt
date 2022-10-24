@@ -67,24 +67,24 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             }
     }
 
-    private fun removeToolsNamespaceAttributes(child: Node?) {
-        if (child?.childNodes?.length == 0) {
-            return
+    private fun removeToolsNamespaceAttributes(node: Node?) {
+        // Remove all attributes under from the tools namespace.
+        val attributesCount = node?.attributes?.length ?: 0
+        for (i in 0 until attributesCount) {
+            val attr = node?.attributes?.item(i)
+            if (attr?.namespaceURI == TOOLS_NAMESPACE_URI) {
+                currentDocument = currentDocument.replace(
+                    attr.toString(),
+                    ""
+                )
+            }
         }
 
-        val childrenCount = child?.childNodes?.length ?: 0
+        // Do the same with all children.
+        val childrenCount = node?.childNodes?.length ?: 0
         for (i in 0 until childrenCount) {
-            val subChild = child?.childNodes?.item(i)
-            val attributesCount = subChild?.attributes?.length ?: 0
-            for (j in 0 until attributesCount) {
-                val attr = subChild?.attributes?.item(j)
-                if (attr?.namespaceURI == TOOLS_NAMESPACE_URI)
-                    currentDocument = currentDocument.replace(
-                        attr.toString(),
-                        ""
-                    )
-            }
-            removeToolsNamespaceAttributes(subChild)
+            val child = node?.childNodes?.item(i)
+            removeToolsNamespaceAttributes(child)
         }
     }
 
