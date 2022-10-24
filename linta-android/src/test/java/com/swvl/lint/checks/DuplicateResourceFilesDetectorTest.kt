@@ -28,7 +28,7 @@ import org.junit.runners.JUnit4
 class DuplicateResourceFilesDetectorTest {
 
     @Test
-    fun `Given duplicate shape resources with different white-spacing, an error should be reported`() {
+    fun `Given duplicate shape resources with different white-spacing, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
@@ -69,7 +69,7 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given different shape resources, no error should be reported`() {
+    fun `Given different shape resources, no warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
@@ -106,7 +106,7 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given 2 identical resources with different attributes that are under the tools namespace, an error should be reported`() {
+    fun `Given 2 duplicate resources with different attributes that are under the tools namespace, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
@@ -173,7 +173,7 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given duplicate resources with different attributes order, an error should be reported`() {
+    fun `Given duplicate resources with different attributes order, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
@@ -191,7 +191,6 @@ class DuplicateResourceFilesDetectorTest {
                                 android:color="@color/black_10" />
                         </shape>
                     </inset>
-
                     """
                 ).indented(),
                 xml(
@@ -219,7 +218,7 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given duplicate shape resources, where one doesn't have the xml declaration, an error should be reported`() {
+    fun `Given duplicate shape resources, where one doesn't have the xml declaration, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
