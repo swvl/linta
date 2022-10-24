@@ -2,4 +2,22 @@
 
     <string name="app_name">Lint Sample</string>
 
+    <!-- Labels -->
+    <string name="label_master">Lint Issues Sample</string>
+
+    <!-- MasterFragment -->
+    <string name="select_a_tip">Select a tip below to read. ✨</string>
+    <string name="tip_title">Tip %d</string>
+
+    <!-- DetailFragment -->
+    <string name="cd_code">Code</string>
+    <string name="switch_to_primary_color">Switch to Primary Color</string>
+    <string name="switch_to_secondary_color">Switch to Secondary Color</string>
+
+    <!-- Tips -->
+    <string name="tip_1">Love What You Do and Do What You Love</string>
+    <string name="tip_2">Don’t Just Code – Build Solutions</string>
+    <string name="tip_3">Leave Your Comfort Zone</string>
+    <string name="tip_4">Don’t Be Afraid To Make Mistakes</string>
+
 </resources>

@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-    id("com.android.application") version "7.3.0" apply false
-    id("com.android.library") version "7.3.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.20" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.7.20" apply false
-    id("com.vanniktech.maven.publish") version "0.22.0" apply false
-    id("androidx.navigation.safeargs.kotlin") version "2.5.3" apply false
+package com.swvl.lintsample.master.adapter
+
+import androidx.annotation.StringRes
+import com.swvl.lintsample.R
+
+enum class Tip(@StringRes val stringResId: Int) {
+
+    TIP_1(R.string.tip_1),
+    TIP_2(R.string.tip_2),
+    TIP_3(R.string.tip_3),
+    TIP_4(R.string.tip_4)
 }
