@@ -56,6 +56,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             .transform(DOMSource(document), StreamResult(stringWriter))
 
         currentDocument = stringWriter.toString()
+        stringWriter.flush()
 
         removeToolsNamespaceAttributes(document.firstChild ?: return)
 
