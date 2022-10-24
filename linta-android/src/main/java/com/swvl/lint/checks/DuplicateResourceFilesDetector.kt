@@ -59,8 +59,10 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
 
         removeToolsNamespaceAttributes(document.firstChild ?: return)
 
+        // Remove whitespaces.
         currentDocument = currentDocument.replace("\\s+".toRegex(), "")
 
+        // Cache the document.
         resources[currentDocument] =
             resources.getOrDefault(currentDocument, ArrayList()).apply {
                 add(ResourceDeclaration(context.file.name, context.createLocationHandle(document)))
@@ -89,6 +91,9 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     override fun afterCheckRootProject(context: Context) {
+        // Clear the last document.
+        currentDocument = ""
+
         for ((_, resource) in resources) {
             if (resource.size > 1) {
                 val firstLocation = resource[0].locationHandle.resolve()
