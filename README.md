@@ -1,5 +1,7 @@
 # Linta
 
+[![Build Status](https://app.bitrise.io/app/88ca7b673ed9bb00/status.svg?token=OqjTeLBPuw0W-T1jD9ADNw&branch=main)](https://app.bitrise.io/app/88ca7b673ed9bb00)
+
 A set of useful lint checks developed with Android Lint API to keep the app follow a solid design system
 
 ## Motivation
