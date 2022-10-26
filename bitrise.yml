@@ -1,0 +1,70 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: android
+trigger_map:
+  - pull_request_target_branch: '*'
+    workflow: pull-request
+workflows:
+  pull-request:
+    description: |
+      Runs Linta lint checks unit tests.
+    steps:
+      - git-clone@6:
+          title: Clone GitHub Repository
+      - cache-pull@2:
+          title: Pull Cache
+      - install-missing-android-tools@3:
+          title: Install Missing Android Tools
+          inputs:
+            - gradlew_path: "$PROJECT_LOCATION/gradlew"
+      - gradle-unit-test@1:
+          title: Lint Checks Unit Tests
+          is_always_run: true
+          inputs:
+            - unit_test_task: :${MODULE_LINTA_ANDROID}:test
+      - cache-push@2:
+          title: Push Cache
+      - deploy-to-bitrise-io@2:
+          title: Deploy Artifacts to Bitrise
+          inputs:
+            - notify_user_groups: none
+            - permanent_download_url_map_format: |-
+                | Build Artifacts |
+                |:-|
+                {{range $index, $element := .}}{{if $index}}
+                {{end}}| [{{$element.File}}]({{$element.URL}}) |{{end}}
+      - comment-on-github-pull-request@0:
+          title: Comment Bitrise Build Result on the PR
+          inputs:
+            - body: |-
+                ## Bitrise
+                
+                [View test reports]($BITRISE_BUILD_TEST_REPORTS_URL)
+                
+                [View more details on Bitrise]($BITRISE_BUILD_URL)
+                
+                $BITRISE_PERMANENT_DOWNLOAD_URL_MAP
+            - update_comment_tag: bitrise-build-result
+            - personal_access_token: $GITHUB_TOKEN
+meta:
+  bitrise.io:
+    stack: linux-docker-android-20.04
+app:
+  envs:
+    - opts:
+        is_expand: false
+      PROJECT_LOCATION: "."
+    - opts:
+        is_expand: false
+      GRADLEW_PATH: ./gradlew
+    - opts:
+        is_expand: false
+      MODULE_LINTA_ANDROID: linta-android
+    - opts:
+        is_expand: false
+      MODULE_SAMPLE: sample
+    - opts:
+        is_expand: false
+      VARIANT_SAMPLE: release
+    - BITRISE_BUILD_TEST_REPORTS_URL: https://addons-testing.bitrise.io/builds/$BITRISE_BUILD_SLUG
