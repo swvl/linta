@@ -57,6 +57,9 @@ app:
       PROJECT_LOCATION: "."
     - opts:
         is_expand: false
+      GRADLEW_PATH: ./gradlew
+    - opts:
+        is_expand: false
       MODULE_LINTA_ANDROID: linta-android
     - opts:
         is_expand: false
