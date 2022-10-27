@@ -2,7 +2,7 @@
 
 .gradle
 .gradle/
-build/
+/build
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -45,7 +45,7 @@ local.properties
 *.log
 
 # Android Studio generated files and folders
-captures/
+/captures
 .externalNativeBuild/
 .cxx/
 *.apk
