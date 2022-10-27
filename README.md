@@ -1,5 +1,9 @@
 # Linta
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.swvl.lint/linta-android.svg)](https://mvnrepository.com/artifact/com.swvl.lint/linta-android)
+[![Build Status](https://app.bitrise.io/app/88ca7b673ed9bb00/status.svg?token=OqjTeLBPuw0W-T1jD9ADNw&branch=main)](https://app.bitrise.io/app/88ca7b673ed9bb00)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A set of useful lint checks developed with Android Lint API to keep the app follow a solid design system
 
 ## Motivation
