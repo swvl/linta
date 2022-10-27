@@ -41,7 +41,6 @@ replay_pid*
 
 # Local configuration file (sdk path, etc)
 local.properties
-/local.properties
 
 # Log/OS Files
 *.log
