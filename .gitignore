@@ -50,7 +50,6 @@ local.properties
 # Android Studio generated files and folders
 captures/
 .externalNativeBuild/
-.externalNativeBuild
 .cxx/
 .cxx
 *.apk
