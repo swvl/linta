@@ -32,7 +32,7 @@ class DuplicateResourceFilesDetectorTest {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
                         android:shape="rectangle">
@@ -73,7 +73,7 @@ class DuplicateResourceFilesDetectorTest {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
                         android:shape="rectangle">
@@ -218,7 +218,7 @@ class DuplicateResourceFilesDetectorTest {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/resource.xml",
+                    "res/drawable/resource1.xml",
                     """
                     <inset xmlns:android="http://schemas.android.com/apk/res/android"
                         android:insetTop="-1dp">
@@ -263,7 +263,7 @@ class DuplicateResourceFilesDetectorTest {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <?xml version="1.0" encoding="utf-8"?>
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
