@@ -19,6 +19,7 @@ package com.swvl.lint.checks
 import com.android.resources.ResourceFolderType
 import com.android.tools.lint.detector.api.*
 import org.w3c.dom.Document
+import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.StringWriter
 import javax.xml.transform.TransformerFactory
@@ -31,8 +32,6 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     data class ResourceDeclaration(val name: String, val locationHandle: Location.Handle)
 
     private val resources = HashMap<String, MutableList<ResourceDeclaration>>()
-
-    private lateinit var currentDocument: String
 
     override fun appliesTo(folderType: ResourceFolderType): Boolean {
         return folderType in setOf(
@@ -49,19 +48,18 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     override fun visitDocument(context: XmlContext, document: Document) {
+        removeToolsNamespaceAttributes(document.firstChild ?: return)
+
         val stringWriter = StringWriter()
 
         // The transformer will auto-order the elements attributes.
         TransformerFactory.newInstance().newTransformer()
             .transform(DOMSource(document), StreamResult(stringWriter))
 
-        currentDocument = stringWriter.toString()
-        stringWriter.flush()
-
-        removeToolsNamespaceAttributes(document.firstChild ?: return)
-
         // Remove whitespaces.
-        currentDocument = currentDocument.replace("\\s+".toRegex(), "")
+        val currentDocument = stringWriter.buffer.replace("\\s+".toRegex(), "")
+
+        stringWriter.flush()
 
         // Cache the document.
         resources[currentDocument] =
@@ -70,28 +68,29 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             }
     }
 
-    private fun removeToolsNamespaceAttributes(node: Node?) {
+    private fun removeToolsNamespaceAttributes(node: Node) {
         // Remove tools namespace and all attributes under it.
-        val attributesCount = node?.attributes?.length ?: 0
-        for (i in 0 until attributesCount) {
-            val attr = node?.attributes?.item(i)
-            if (attr?.namespaceURI == TOOLS_NAMESPACE_URI || attr?.nodeValue == TOOLS_NAMESPACE_URI) {
-                currentDocument = currentDocument.replace(attr.toString(), "")
+        if (node.nodeType == Element.ELEMENT_NODE) {
+            var i = 0
+            while (i < node.attributes.length) {
+                val attr = node.attributes.item(i)
+                if (attr.namespaceURI == TOOLS_NAMESPACE_URI || attr.nodeValue == TOOLS_NAMESPACE_URI) {
+                    node.attributes.removeNamedItem(attr.nodeName)
+                    continue
+                }
+                i++
             }
         }
 
         // Do the same with all children.
-        val childrenCount = node?.childNodes?.length ?: 0
+        val childrenCount = node.childNodes.length
         for (i in 0 until childrenCount) {
-            val child = node?.childNodes?.item(i)
+            val child = node.childNodes.item(i)
             removeToolsNamespaceAttributes(child)
         }
     }
 
     override fun afterCheckRootProject(context: Context) {
-        // Clear the last document.
-        currentDocument = ""
-
         for ((_, resource) in resources) {
             if (resource.size > 1) {
                 val firstLocation = resource[0].locationHandle.resolve()
