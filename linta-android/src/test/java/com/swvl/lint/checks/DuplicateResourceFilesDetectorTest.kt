@@ -28,11 +28,11 @@ import org.junit.runners.JUnit4
 class DuplicateResourceFilesDetectorTest {
 
     @Test
-    fun `Given duplicate shape resources with different white-spacing, an error should be reported`() {
+    fun `Given duplicate shape resources with different white-spacing, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
                         android:shape="rectangle">
@@ -69,11 +69,11 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given different shape resources, no error should be reported`() {
+    fun `Given different shape resources, no warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
                         android:shape="rectangle">
@@ -106,7 +106,48 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given 2 identical resources with different attributes that are under the tools namespace, an error should be reported`() {
+    fun `Given 2 duplicate resources, one with attributes that are under the tools namespace and another without, a warning should be reported`() {
+        TestLintTask.lint()
+            .files(
+                xml(
+                    "res/layout/item_title.xml",
+                    """
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/tv_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        tools:text="Title" />
+                    """
+                ).indented(),
+                xml(
+                    "res/layout/item_option.xml",
+                    """
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/tv_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:paddingHorizontal="32dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+                    """
+                ).indented()
+            )
+            .issues(DuplicateResourceFilesDetector.ISSUE)
+            .allowMissingSdk()
+            .run()
+            .expectCount(1, Severity.WARNING)
+    }
+
+    @Test
+    fun `Given 2 duplicate resources with different attributes that are under the tools namespace, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
@@ -173,11 +214,11 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given duplicate resources with different attributes order, an error should be reported`() {
+    fun `Given duplicate resources with different attributes order, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/resource.xml",
+                    "res/drawable/resource1.xml",
                     """
                     <inset xmlns:android="http://schemas.android.com/apk/res/android"
                         android:insetTop="-1dp">
@@ -191,7 +232,6 @@ class DuplicateResourceFilesDetectorTest {
                                 android:color="@color/black_10" />
                         </shape>
                     </inset>
-
                     """
                 ).indented(),
                 xml(
@@ -219,11 +259,11 @@ class DuplicateResourceFilesDetectorTest {
     }
 
     @Test
-    fun `Given duplicate shape resources, where one doesn't have the xml declaration, an error should be reported`() {
+    fun `Given duplicate shape resources, where one doesn't have the xml declaration, a warning should be reported`() {
         TestLintTask.lint()
             .files(
                 xml(
-                    "res/drawable/shape.xml",
+                    "res/drawable/shape1.xml",
                     """
                     <?xml version="1.0" encoding="utf-8"?>
                     <shape xmlns:android="http://schemas.android.com/apk/res/android"
