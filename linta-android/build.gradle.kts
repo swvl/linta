@@ -20,7 +20,7 @@ plugins {
     id("java-library")
     id("com.android.lint")
     id("org.jetbrains.kotlin.jvm")
-    id("com.vanniktech.maven.publish") version "0.22.0"
+    id("com.vanniktech.maven.publish")
 }
 
 java {
