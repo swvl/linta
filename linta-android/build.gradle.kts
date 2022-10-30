@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id("java-library")
     id("com.android.lint")
     id("org.jetbrains.kotlin.jvm")
+    id("com.vanniktech.maven.publish") version "0.22.0"
 }
 
 java {
@@ -36,5 +39,40 @@ dependencies {
 tasks.withType<Jar> {
     manifest {
         attributes["Lint-Registry-v2"] = "com.swvl.lint.LintIssueRegistry"
+    }
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.S01)
+    signAllPublications()
+
+    pom {
+        name.set("Linta (Android)")
+        description.set("A set of useful lint checks to make the app follow a solid design system.")
+        inceptionYear.set("2022")
+        url.set("https://github.com/swvl/linta")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        developers {
+            developer {
+                name.set("Swvl Android OSS")
+                email.set("android-open-source@swvl.com")
+                organization.set("Swvl")
+                organizationUrl.set("https://www.swvl.com")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/swvl/linta")
+            connection.set("scm:git:git://github.com/swvl/linta.git")
+            developerConnection.set("scm:git:ssh://git@github.com/swvl/linta.git")
+        }
     }
 }
