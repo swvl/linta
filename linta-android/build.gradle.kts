@@ -21,6 +21,7 @@ plugins {
     id("com.android.lint")
     id("org.jetbrains.kotlin.jvm")
     id("com.vanniktech.maven.publish")
+    id("jacoco")
 }
 
 java {
@@ -40,6 +41,18 @@ tasks.withType<Jar> {
     manifest {
         attributes["Lint-Registry-v2"] = "com.swvl.lint.LintIssueRegistry"
     }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(false)
+    }
+    dependsOn(tasks.test)
 }
 
 mavenPublishing {

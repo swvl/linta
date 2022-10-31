@@ -23,6 +23,11 @@ workflows:
           is_always_run: true
           inputs:
             - unit_test_task: :${MODULE_LINTA_ANDROID}:test
+      - codecov@3:
+          title: Run Codecov
+          inputs:
+            - OS: linux
+            - CODECOV_TOKEN: $CODECOV_TOKEN
       - cache-push@2:
           title: Push Cache
       - deploy-to-bitrise-io@2:
