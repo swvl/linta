@@ -4,9 +4,9 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: android
 trigger_map:
   - pull_request_target_branch: '*'
-    workflow: pull-request
+    workflow: primary
 workflows:
-  pull-request:
+  primary:
     description: |
       Runs Linta lint checks unit tests.
     steps:
