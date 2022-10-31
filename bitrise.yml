@@ -41,6 +41,7 @@ workflows:
                 {{end}}| [{{$element.File}}]({{$element.URL}}) |{{end}}
       - comment-on-github-pull-request@0:
           title: Comment Bitrise Build Result on the PR
+          run_if: .IsPR
           inputs:
             - body: |-
                 ## Bitrise
