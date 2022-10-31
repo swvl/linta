@@ -52,7 +52,16 @@ tasks.jacocoTestReport {
         xml.required.set(true)
         html.required.set(false)
     }
+
     dependsOn(tasks.test)
+
+    classDirectories.setFrom(
+        files(
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude("com/swvl/lint/LintIssueRegistry.class")
+            }
+        )
+    )
 }
 
 mavenPublishing {
