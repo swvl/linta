@@ -58,6 +58,7 @@ tasks.jacocoTestReport {
     classDirectories.setFrom(
         files(
             sourceSets.main.get().output.asFileTree.matching {
+                // Exclude the issue registry, since there is nothing to be tested there.
                 exclude("com/swvl/lint/LintIssueRegistry.class")
             }
         )
