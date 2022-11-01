@@ -32,6 +32,7 @@ java {
 lint {
     checkAllWarnings = true
     warningsAsErrors = true
+    baseline = file("lint-baseline.xml")
 }
 
 dependencies {
