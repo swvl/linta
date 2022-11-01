@@ -116,6 +116,7 @@ workflows:
             - name: $RELEASE_VERSION_NAME
             - body: $RELEASE_DESCRIPTION
             - tag: $RELEASE_VERSION_NAME
+            - commit: $GIT_CLONE_COMMIT_HASH
             - api_token: $GITHUB_TOKEN
       - cache-push@2:
           title: Push Cache
