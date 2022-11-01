@@ -17,7 +17,7 @@ workflows:
       - install-missing-android-tools@3:
           title: Install Missing Android Tools
           inputs:
-            - gradlew_path: "$PROJECT_LOCATION/gradlew"
+            - gradlew_path: $BITRISE_SOURCE_DIR/gradlew
       - gradle-runner@2:
           title: Lint Checks
           inputs:
@@ -69,7 +69,7 @@ workflows:
       - install-missing-android-tools@3:
           title: Install Missing Android Tools
           inputs:
-            - gradlew_path: $PROJECT_LOCATION/gradlew
+            - gradlew_path: $BITRISE_SOURCE_DIR/gradlew
       - gradle-runner@2:
           title: Lint Checks
           inputs:
@@ -142,9 +142,6 @@ meta:
     stack: linux-docker-android-20.04
 app:
   envs:
-    - opts:
-        is_expand: false
-      PROJECT_LOCATION: "."
     - opts:
         is_expand: false
       GRADLEW_PATH: ./gradlew
