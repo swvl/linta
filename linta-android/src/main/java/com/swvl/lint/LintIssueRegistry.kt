@@ -50,6 +50,7 @@ class LintIssueRegistry : IssueRegistry() {
      */
     override val vendor = Vendor(
         vendorName = "Swvl",
-        identifier = "linta-android"
+        identifier = "linta-android",
+        feedbackUrl = "https://github.com/swvl/linta"
     )
 }
