@@ -40,7 +40,7 @@ object ColorUtils {
      * @return the 8-digit hexadecimal format of a color of any length.
      */
     fun get8DigitColorFormat(hexColor: String): String {
-        val newColor = hexColor.toUpperCase(Locale.US)
+        val newColor = hexColor.uppercase(Locale.US)
 
         return when (newColor.length) {
             9 -> {
@@ -83,7 +83,7 @@ object ColorUtils {
      * format if an alpha component exists.
      */
     fun getBestColorFormat(hexColor: String): String {
-        val newColor = hexColor.toUpperCase(Locale.US)
+        val newColor = hexColor.uppercase(Locale.US)
 
         return when (newColor.length) {
             9 -> {
