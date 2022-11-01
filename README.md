@@ -35,7 +35,7 @@ The following are the lint checks currently implemented by Linta [please add the
 | `HardcodedColorXml`     |     error     | When a hardcoded color is used in a resource file (drawables, layouts, etc.)                           |
 | `RedundantStyles`       |    warning    | When a style is created without adding any new attributes                                              |
 
-To see how these checks work in action, check our [sample app](https://github.com/swvl/linta/tree/main/sample).
+To see how these checks work in action, check the [generated lint report](https://github.com/swvl/linta/tree/main/sample/build/reports/lint-results-release.html) in our [sample app](https://github.com/swvl/linta/tree/main/sample).
 
 ## License
 
