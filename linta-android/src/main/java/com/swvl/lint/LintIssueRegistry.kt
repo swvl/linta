@@ -45,6 +45,9 @@ class LintIssueRegistry : IssueRegistry() {
     override val minApi: Int
         get() = 7
 
+    /**
+     * The vendor is used to determine the source of the reported lint issues in lint reports.
+     */
     override val vendor = Vendor(
         vendorName = "Swvl",
         identifier = "linta-android"
