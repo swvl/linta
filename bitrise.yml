@@ -18,10 +18,10 @@ workflows:
           title: Install Missing Android Tools
           inputs:
             - gradlew_path: "$PROJECT_LOCATION/gradlew"
-      - android-lint@0:
+      - gradle-runner@2:
           title: Lint Checks
           inputs:
-            - module: linta-android
+            - gradle_task: '${MODULE_LINTA_ANDROID}:lint'
       - gradle-unit-test@1:
           title: Lint Checks Unit Tests
           is_always_run: true
