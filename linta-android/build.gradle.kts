@@ -29,6 +29,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+lint {
+    warningsAsErrors = true
+}
+
 dependencies {
     compileOnly("com.android.tools.lint:lint-api:30.3.1")
 
