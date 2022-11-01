@@ -85,38 +85,29 @@ workflows:
           inputs:
             - OS: linux
             - CODECOV_TOKEN: $CODECOV_TOKEN
-      - file-downloader@1:
-          title: Download Linta Signing Key
-          inputs:
-            - destination: $BITRISE_SOURCE_DIR/secring.kbx
-            - source: $BITRISEIO_SECRING_KBX_URL
       - script@1:
           title: Add Maven Central Secrets
           inputs:
-            - content: >-
+            - content: |-
                 # Fail if any commands fails.
                 set -e
                 
-                # Add secrets required for Maven Central.
+                # Add artifact version name.
                 cat >> $BITRISE_SOURCE_DIR/$MODULE_LINTA_ANDROID/gradle.properties << EOF
                 VERSION_NAME=$RELEASE_VERSION_NAME
                 
-                mavenCentralUsername=$MAVEN_CENTRAL_USERNAME
-                mavenCentralPassword=$MAVEN_CENTRAL_PASSWORD
-                
-                signing.keyId=$SIGNING_KEY_ID
-                signing.password=$SIGNING_PASSWORD
-                signing.secretKeyRingFile=$SIGNING_SECRET_KEY_RING_FILE
-                
                 EOF
+                
+                # Add maven secrets as environment variables.
+                envman add --key ORG_GRADLE_PROJECT_mavenCentralUsername --value $MAVEN_CENTRAL_USERNAME
+                envman add --key ORG_GRADLE_PROJECT_mavenCentralPassword --value $MAVEN_CENTRAL_PASSWORD
+                envman add --key ORG_GRADLE_PROJECT_signingInMemoryKey --value $SIGNING_IN_MEMORY_KEY
+                envman add --key ORG_GRADLE_PROJECT_signingInMemoryKeyId --value $SIGNING_KEY_ID
+                envman add --key ORG_GRADLE_PROJECT_signingInMemoryKeyPassword --value $SIGNING_PASSWORD
       - gradle-runner@2:
           title: Publish Linta Android on Maven Central
           inputs:
             - gradle_task: publishAllPublicationsToMavenCentral
-      - git-tag@1:
-          title: Create Tag on Latest Commit
-          inputs:
-            - tag: $RELEASE_VERSION_NAME
       - github-release@0:
           title: Create New Release
           inputs:
@@ -125,6 +116,7 @@ workflows:
             - name: $RELEASE_VERSION_NAME
             - body: $RELEASE_DESCRIPTION
             - tag: $RELEASE_VERSION_NAME
+            - commit: $GIT_CLONE_COMMIT_HASH
             - api_token: $GITHUB_TOKEN
       - cache-push@2:
           title: Push Cache
