@@ -30,6 +30,7 @@ java {
 }
 
 lint {
+    checkAllWarnings = true
     warningsAsErrors = true
 }
 
