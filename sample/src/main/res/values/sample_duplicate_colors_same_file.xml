@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- All these 4 colors are the same black color but are just represented in different lengths. -->
+    <color name="black1">#FF000000</color>
+    <color name="black2">#000000</color>
+    <color name="black3">#F000</color>
+    <color name="black4">#000</color>
+
+</resources>
