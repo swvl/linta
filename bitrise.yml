@@ -93,7 +93,7 @@ workflows:
       - script@1:
           title: Add Maven Central Secrets
           inputs:
-            - content: >-
+            - content: |-
                 # Fail if any commands fails.
                 set -e
                 
