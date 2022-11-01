@@ -36,6 +36,16 @@ android {
         viewBinding = true
     }
 
+    lint {
+        checkOnly += setOf(
+            "DuplicateColors",
+            "DuplicateResourceFiles",
+            "HardcodedColorSrcCode",
+            "HardcodedColorXml",
+            "RedundantStyles"
+        )
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -49,7 +59,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.6.1")
+    implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation("junit:junit:4.13.2")
