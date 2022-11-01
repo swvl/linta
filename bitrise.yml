@@ -58,6 +58,85 @@ workflows:
                 $BITRISE_PERMANENT_DOWNLOAD_URL_MAP
             - update_comment_tag: bitrise-build-result
             - personal_access_token: $GITHUB_TOKEN
+  publish-on-maven-central:
+    description: |
+      Publish a new version of Linta Android on Maven Central.
+    steps:
+      - git-clone@6:
+          title: Clone GitHub Repository
+      - cache-pull@2:
+          title: Pull Cache
+      - install-missing-android-tools@3:
+          title: Install Missing Android Tools
+          inputs:
+            - gradlew_path: $PROJECT_LOCATION/gradlew
+      - gradle-runner@2:
+          title: Lint Checks
+          inputs:
+            - mapping_file_include_filter: '*/lint-results.html'
+            - gradle_task: '${MODULE_LINTA_ANDROID}:lint'
+      - gradle-unit-test@1:
+          title: Linta Android Unit Tests
+          is_always_run: true
+          inputs:
+            - unit_test_task: ':${MODULE_LINTA_ANDROID}:test'
+      - codecov@3:
+          title: Run Codecov
+          inputs:
+            - OS: linux
+            - CODECOV_TOKEN: $CODECOV_TOKEN
+      - file-downloader@1:
+          title: Download Linta Signing Key
+          inputs:
+            - destination: $BITRISE_SOURCE_DIR/secring.kbx
+            - source: $BITRISEIO_SECRING_KBX_URL
+      - script@1:
+          title: Add Maven Central Secrets
+          inputs:
+            - content: >-
+                # Fail if any commands fails.
+                set -e
+                
+                # Add secrets required for Maven Central.
+                cat >> $BITRISE_SOURCE_DIR/$MODULE_LINTA_ANDROID/gradle.properties << EOF
+                VERSION_NAME=$RELEASE_VERSION_NAME
+                
+                mavenCentralUsername=$MAVEN_CENTRAL_USERNAME
+                mavenCentralPassword=$MAVEN_CENTRAL_PASSWORD
+                
+                signing.keyId=$SIGNING_KEY_ID
+                signing.password=$SIGNING_PASSWORD
+                signing.secretKeyRingFile=$SIGNING_SECRET_KEY_RING_FILE
+                
+                EOF
+      - gradle-runner@2:
+          title: Publish Linta Android on Maven Central
+          inputs:
+            - gradle_task: publishAllPublicationsToMavenCentral
+      - git-tag@1:
+          title: Create Tag on Latest Commit
+          inputs:
+            - tag: $RELEASE_VERSION_NAME
+      - github-release@0:
+          title: Create New Release
+          inputs:
+            - username: $GITHUB_USERNAME
+            - draft: 'no'
+            - name: $RELEASE_VERSION_NAME
+            - body: $RELEASE_DESCRIPTION
+            - tag: $RELEASE_VERSION_NAME
+            - api_token: $GITHUB_TOKEN
+      - cache-push@2:
+          title: Push Cache
+      - deploy-to-bitrise-io@2:
+          title: Deploy Artifacts to Bitrise
+          inputs:
+            - notify_user_groups: none
+            - permanent_download_url_map_format: |-
+                | Build Artifacts |
+                |:-|
+                {{range $index, $element := .}}{{if $index}}
+                {{end}}| [{{$element.File}}]({{$element.URL}}) |{{end}}
 meta:
   bitrise.io:
     stack: linux-docker-android-20.04
