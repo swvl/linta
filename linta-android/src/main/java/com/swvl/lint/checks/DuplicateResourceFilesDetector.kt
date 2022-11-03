@@ -95,7 +95,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             val child = node.childNodes.item(i)
             removeToolsNamespaceAttributesAndComments(child)
 
-            // Only increase counter if node isn't a comment
+            // Only increase the counter if the node isn't a comment.
             if (child.nodeType == Element.COMMENT_NODE) {
                 continue
             }
