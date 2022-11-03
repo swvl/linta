@@ -368,5 +368,29 @@ class DuplicateResourceFilesDetectorTest {
             .allowMissingSdk()
             .run()
             .expectCount(1, Severity.WARNING)
+
+    fun `Given a resource with hardcoded colors but with the lint issue suppressed, when the duplicate resource files detector is run before the hardcoded color detector, no issue should be reported`() {
+        TestLintTask.lint()
+            .files(
+                xml(
+                    "res/drawable/shape.xml",
+                    """
+                    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:shape="rectangle"
+                        tools:ignore="HardcodedColorXml">
+                        <solid android:color="#FFFFFF" />
+                        <stroke
+                            android:width="1dp"
+                            android:color="#000000" />
+                        <corners android:radius="24dp" />
+                    </shape>
+                    """
+                ).indented()
+            )
+            .issues(DuplicateResourceFilesDetector.ISSUE, HardcodedColorXmlDetector.ISSUE)
+            .allowMissingSdk()
+            .run()
+            .expectClean()
     }
 }

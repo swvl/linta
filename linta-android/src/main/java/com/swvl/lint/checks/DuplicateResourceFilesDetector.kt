@@ -48,13 +48,17 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     override fun visitDocument(context: XmlContext, document: Document) {
-        removeToolsNamespaceAttributesAndComments(document.firstChild ?: return)
+        // Deep clone the document to not affect the original document, as the same document
+        // instance is used in all other lint detectors.
+        val documentClone = document.cloneNode(true)
+
+        removeToolsNamespaceAttributesAndComments(documentClone.firstChild ?: return)
 
         val stringWriter = StringWriter()
 
         // The transformer will auto-order the elements attributes.
         TransformerFactory.newInstance().newTransformer()
-            .transform(DOMSource(document), StreamResult(stringWriter))
+            .transform(DOMSource(documentClone), StreamResult(stringWriter))
 
         // Remove whitespaces.
         val currentDocument = stringWriter.buffer.replace("\\s+".toRegex(), "")
