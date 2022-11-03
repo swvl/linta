@@ -52,7 +52,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
         // instance is used in all other lint detectors.
         val documentClone = document.cloneNode(true)
 
-        removeToolsNamespaceAttributes(documentClone.firstChild ?: return)
+        removeToolsNamespaceAttributesAndComments(documentClone.firstChild ?: return)
 
         val stringWriter = StringWriter()
 
@@ -72,9 +72,9 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             }
     }
 
-    private fun removeToolsNamespaceAttributes(node: Node) {
-        // Remove tools namespace and all attributes under it.
+    private fun removeToolsNamespaceAttributesAndComments(node: Node) {
         if (node.nodeType == Element.ELEMENT_NODE) {
+            // Remove tools namespace and all attributes under it.
             var i = 0
             while (i < node.attributes.length) {
                 val attr = node.attributes.item(i)
@@ -84,13 +84,22 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
                 }
                 i++
             }
+        } else if (node.nodeType == Element.COMMENT_NODE) {
+            // Remove comment nodes.
+            node.parentNode.removeChild(node)
         }
 
         // Do the same with all children.
-        val childrenCount = node.childNodes.length
-        for (i in 0 until childrenCount) {
+        var i = 0
+        while (i < node.childNodes.length) {
             val child = node.childNodes.item(i)
-            removeToolsNamespaceAttributes(child)
+            removeToolsNamespaceAttributesAndComments(child)
+
+            // Only increase the counter if the node isn't a comment.
+            if (child.nodeType == Element.COMMENT_NODE) {
+                continue
+            }
+            i++
         }
     }
 
