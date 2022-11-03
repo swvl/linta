@@ -81,12 +81,21 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
                 i++
             }
         }
+        // Remove comment nodes.
+        else if (node.nodeType == Element.COMMENT_NODE) {
+            node.parentNode.removeChild(node)
+        }
 
         // Do the same with all children.
-        val childrenCount = node.childNodes.length
-        for (i in 0 until childrenCount) {
+        var i = 0
+        while (i < node.childNodes.length) {
             val child = node.childNodes.item(i)
             removeToolsNamespaceAttributes(child)
+
+            // Only increase counter if node isn't a comment
+            if (child.nodeType == Element.COMMENT_NODE)
+                continue
+            i++
         }
     }
 

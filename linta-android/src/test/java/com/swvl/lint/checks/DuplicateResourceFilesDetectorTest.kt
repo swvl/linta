@@ -295,4 +295,78 @@ class DuplicateResourceFilesDetectorTest {
             .run()
             .expectCount(1, Severity.WARNING)
     }
+
+    @Test
+    fun `Given 2 duplicate layouts where one has comments and the other doesn't, a warning should be reported`() {
+        TestLintTask.lint()
+            .files(
+                xml(
+                    "res/layout/layout1.xml",
+                    """
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp">
+                        <!-- This is a button -->
+                        <Button
+                            android:id="@+id/addPassenger_button"
+                            style="@style/Widget.App.Button.Outlined.Primary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="@string/travel_bookingConfirmation_addPassenger_button_title" />
+                            
+                        <!-- End of layout -->
+                        
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+                            
+                            <!-- empty layout -->
+                            
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    """
+                ).indented(),
+                xml(
+                    "res/layout/layout2.xml",
+                    """
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp">
+
+                        <Button
+                            android:id="@+id/addPassenger_button"
+                            style="@style/Widget.App.Button.Outlined.Primary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="@string/travel_bookingConfirmation_addPassenger_button_title" />
+                            
+                            <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+                            </LinearLayout>
+
+                    </LinearLayout>
+                    """
+                ).indented()
+            )
+            .issues(DuplicateResourceFilesDetector.ISSUE)
+            .allowMissingSdk()
+            .run()
+            .expectCount(1, Severity.WARNING)
+    }
 }
