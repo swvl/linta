@@ -96,8 +96,9 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             removeToolsNamespaceAttributesAndComments(child)
 
             // Only increase counter if node isn't a comment
-            if (child.nodeType == Element.COMMENT_NODE)
+            if (child.nodeType == Element.COMMENT_NODE) {
                 continue
+            }
             i++
         }
     }
