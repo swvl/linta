@@ -368,7 +368,9 @@ class DuplicateResourceFilesDetectorTest {
             .allowMissingSdk()
             .run()
             .expectCount(1, Severity.WARNING)
+    }
 
+    @Test
     fun `Given a resource with hardcoded colors but with the lint issue suppressed, when the duplicate resource files detector is run before the hardcoded color detector, no issue should be reported`() {
         TestLintTask.lint()
             .files(
