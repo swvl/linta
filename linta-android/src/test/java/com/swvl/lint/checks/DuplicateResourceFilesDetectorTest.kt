@@ -327,7 +327,7 @@ class DuplicateResourceFilesDetectorTest {
                             android:gravity="center|start"
                             android:orientation="horizontal">
                             
-                            <!-- empty layout -->
+                            <!-- Empty layout -->
                             
                         </LinearLayout>
 
