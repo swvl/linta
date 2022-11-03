@@ -73,8 +73,8 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     private fun removeToolsNamespaceAttributesAndComments(node: Node) {
-        // Remove tools namespace and all attributes under it.
         if (node.nodeType == Element.ELEMENT_NODE) {
+            // Remove tools namespace and all attributes under it.
             var i = 0
             while (i < node.attributes.length) {
                 val attr = node.attributes.item(i)
@@ -84,9 +84,8 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
                 }
                 i++
             }
-        }
-        // Remove comment nodes.
-        else if (node.nodeType == Element.COMMENT_NODE) {
+        } else if (node.nodeType == Element.COMMENT_NODE) {
+            // Remove comment nodes.
             node.parentNode.removeChild(node)
         }
 
