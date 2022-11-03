@@ -48,7 +48,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
     }
 
     override fun visitDocument(context: XmlContext, document: Document) {
-        removeToolsNamespaceAttributes(document.firstChild ?: return)
+        removeToolsNamespaceAttributesAndComments(document.firstChild ?: return)
 
         val stringWriter = StringWriter()
 
@@ -68,7 +68,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
             }
     }
 
-    private fun removeToolsNamespaceAttributes(node: Node) {
+    private fun removeToolsNamespaceAttributesAndComments(node: Node) {
         // Remove tools namespace and all attributes under it.
         if (node.nodeType == Element.ELEMENT_NODE) {
             var i = 0
@@ -90,7 +90,7 @@ class DuplicateResourceFilesDetector : ResourceXmlDetector() {
         var i = 0
         while (i < node.childNodes.length) {
             val child = node.childNodes.item(i)
-            removeToolsNamespaceAttributes(child)
+            removeToolsNamespaceAttributesAndComments(child)
 
             // Only increase counter if node isn't a comment
             if (child.nodeType == Element.COMMENT_NODE)
