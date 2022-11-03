@@ -353,12 +353,12 @@ class DuplicateResourceFilesDetectorTest {
                             android:paddingEnd="20dp"
                             android:text="@string/travel_bookingConfirmation_addPassenger_button_title" />
                             
-                            <LinearLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|start"
                             android:orientation="horizontal">
-                            </LinearLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
                     """
